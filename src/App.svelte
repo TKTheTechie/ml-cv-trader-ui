@@ -11,7 +11,7 @@
   import GameOver from './lib/game-over/game-over.svelte';
   import './app.css';
 
-  export let beginTrading = false;
+  let beginTrading = false;
 
   let solaceClient = new SolaceClient();
 
@@ -35,7 +35,7 @@
     </div>
     <div class="w-5/6 lg:max-w-lg ml-2 lg:w-full lg:h-full lg:max-h-lg  md:w-1/2 ">
       {#if !beginTrading}
-        <Intro />
+        <Intro bind:beginTrading />
       {:else}
         <div transition:fade>
           <Timer timerStart={'2:30'} />
