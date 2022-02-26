@@ -32,8 +32,5 @@ export default {
   },
   devOptions: {
     /* ... */
-  },
-  buildOptions: {
-    /* ... */
-  },
+  }
 };
