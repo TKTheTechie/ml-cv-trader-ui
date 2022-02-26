@@ -1,76 +1,52 @@
 <script lang="ts">
-  import {onMount} from 'svelte'
+  import { onMount, setContext } from 'svelte';
+  import TradingEngine from './lib/trading-engine/trading-engine.svelte';
+  import Intro from './lib/intro/intro.svelte';
+  import SignalTracker from './lib/signal-tracker/signal-tracker.svelte';
+  import Portfolio from './lib/portfolio/portfolio.svelte';
+  import { SolaceClient, SOLACE_CLIENT_CONTEXT_KEY } from './lib/solace-client';
+  import { fade } from 'svelte/transition';
+  import Timer from './lib/timer/timer.svelte';
+  import { gameOver } from './lib/store/store';
+  import GameOver from './lib/game-over/game-over.svelte';
+  import './app.css';
 
-  let count: number = 0
-  onMount(() => {
-    const interval = setInterval(() => count++, 1000)
-    return () => {
-      clearInterval(interval)
-    }
-  })
+  export let beginTrading = false;
+
+  let solaceClient = new SolaceClient();
+
+  setContext(SOLACE_CLIENT_CONTEXT_KEY, solaceClient);
+
+  onMount(async () => {
+    solaceClient.connect().then(() => {
+      console.log('Solace Connected!!!');
+    });
+  });
 </script>
 
-<style>
-  :global(body) {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-  }
+<svelte:head>
+  <title>Home</title>
+</svelte:head>
 
-  .App {
-    text-align: center;
-  }
-
-  .App code {
-    background: #0002;
-    padding: 4px 8px;
-    border-radius: 4px;
-  }
-
-  .App p {
-    margin: 0.4rem;
-  }
-
-  .App-header {
-    background-color: #f9f6f6;
-    color: #333;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-  }
-
-  .App-link {
-    color: #ff3e00;
-  }
-
-  .App-logo {
-    height: 36vmin;
-    pointer-events: none;
-    margin-bottom: 3rem;
-    animation: App-logo-spin infinite 1.6s ease-in-out alternate;
-  }
-
-  @keyframes App-logo-spin {
-    from {
-      transform: scale(1);
-    }
-    to {
-      transform: scale(1.06);
-    }
-  }
-</style>
-
-<div class="App">
-  <header class="App-header">
-    <img src="/logo.svg" class="App-logo" alt="logo"/>
-    <p>Edit <code>src/App.svelte</code> and save to reload.</p>
-    <p>Page has been open for <code>{count}</code> seconds.</p>
-    <p>
-      <a class="App-link" href="https://svelte.dev" target="_blank" rel="noopener noreferrer">
-        Learn Svelte
-      </a>
-    </p>
-  </header>
-</div>
+<section class="text-gray-100 bg-black">
+  <div class="grid grid-cols-2 align-top">
+    <div class="flex justify-end w-full align-top text-center lg: -ml-10">
+      <SignalTracker />
+    </div>
+    <div class="w-5/6 lg:max-w-lg ml-2 lg:w-full lg:h-full lg:max-h-lg  md:w-1/2 ">
+      {#if !beginTrading}
+        <Intro />
+      {:else}
+        <div transition:fade>
+          <Timer timerStart={'2:30'} />
+          {#if !$gameOver}
+            <TradingEngine />
+            <Portfolio />
+          {:else}
+            <GameOver />
+          {/if}
+        </div>
+      {/if}
+    </div>
+  </div>
+</section>

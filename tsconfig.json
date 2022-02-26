@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
-  "include": ["src", "types"],
+  "include": ["src", "types", "tailwind.config.cjs"],
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "node",
@@ -16,7 +16,7 @@
     /* noEmit - Snowpack builds (emits) files, not tsc. */
     "noEmit": true,
     /* Additional Options */
-    "strict": true,
+    "strict": false,
     "skipLibCheck": true,
     "types": ["mocha", "snowpack-env"],
     "forceConsistentCasingInFileNames": true,

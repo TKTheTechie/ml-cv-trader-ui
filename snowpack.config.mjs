@@ -14,6 +14,10 @@ export default {
         ...(process.versions.pnp ? {tsc: 'yarn pnpify tsc'} : {}),
       },
     ],
+    [
+      "@snowpack/plugin-build-script",
+      { cmd: "postcss", input: [".css"], output: [".css"] },
+    ],
   ],
   routes: [
     /* Enable an SPA Fallback in development: */
