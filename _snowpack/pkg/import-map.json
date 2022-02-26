@@ -1,0 +1,17 @@
+{
+  "imports": {
+    "@fortawesome/free-solid-svg-icons": "./@fortawesome/free-solid-svg-icons.js",
+    "handtrackjs": "./handtrackjs.js",
+    "luxon": "./luxon.js",
+    "pino": "./pino.js",
+    "solclientjs": "./solclientjs.js",
+    "svelte": "./svelte.js",
+    "svelte-awesome": "./svelte-awesome.js",
+    "svelte-awesome/icons": "./svelte-awesome/icons.js",
+    "svelte-frappe-charts": "./svelte-frappe-charts.js",
+    "svelte-loading-spinners": "./svelte-loading-spinners.js",
+    "svelte/internal": "./svelte/internal.js",
+    "svelte/store": "./svelte/store.js",
+    "svelte/transition": "./svelte/transition.js"
+  }
+}
