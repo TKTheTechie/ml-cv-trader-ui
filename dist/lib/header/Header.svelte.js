@@ -39,7 +39,7 @@ function create_fragment(ctx) {
 			section = element("section");
 			div = element("div");
 			span = element("span");
-			span.textContent = "cv-ml-trader";
+			span.textContent = "ml-cv-trader";
 			t1 = space();
 			nav = element("nav");
 			a = element("a");

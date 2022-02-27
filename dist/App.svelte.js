@@ -38,13 +38,10 @@ import './app.css.proxy.js';
 
 function create_else_block(ctx) {
 	let div;
-	let timer;
-	let t;
 	let current_block_type_index;
 	let if_block;
 	let div_transition;
 	let current;
-	timer = new Timer({ props: { timerStart: '2:30' } });
 	const if_block_creators = [create_if_block_1, create_else_block_1];
 	const if_blocks = [];
 
@@ -59,14 +56,10 @@ function create_else_block(ctx) {
 	return {
 		c() {
 			div = element("div");
-			create_component(timer.$$.fragment);
-			t = space();
 			if_block.c();
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
-			mount_component(timer, div, null);
-			append(div, t);
 			if_blocks[current_block_type_index].m(div, null);
 			current = true;
 		},
@@ -97,7 +90,6 @@ function create_else_block(ctx) {
 		},
 		i(local) {
 			if (current) return;
-			transition_in(timer.$$.fragment, local);
 			transition_in(if_block);
 
 			add_render_callback(() => {
@@ -108,7 +100,6 @@ function create_else_block(ctx) {
 			current = true;
 		},
 		o(local) {
-			transition_out(timer.$$.fragment, local);
 			transition_out(if_block);
 			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
 			div_transition.run(0);
@@ -116,7 +107,6 @@ function create_else_block(ctx) {
 		},
 		d(detaching) {
 			if (detaching) detach(div);
-			destroy_component(timer);
 			if_blocks[current_block_type_index].d();
 			if (detaching && div_transition) div_transition.end();
 		}
@@ -205,41 +195,52 @@ function create_else_block_1(ctx) {
 	};
 }
 
-// (37:10) {#if !$gameOver}
+// (36:10) {#if !$gameOver}
 function create_if_block_1(ctx) {
+	let timer;
+	let t0;
 	let tradingengine;
-	let t;
+	let t1;
 	let portfolio;
 	let current;
+	timer = new Timer({ props: { timerStart: '2:30' } });
 	tradingengine = new TradingEngine({});
 	portfolio = new Portfolio({});
 
 	return {
 		c() {
+			create_component(timer.$$.fragment);
+			t0 = space();
 			create_component(tradingengine.$$.fragment);
-			t = space();
+			t1 = space();
 			create_component(portfolio.$$.fragment);
 		},
 		m(target, anchor) {
+			mount_component(timer, target, anchor);
+			insert(target, t0, anchor);
 			mount_component(tradingengine, target, anchor);
-			insert(target, t, anchor);
+			insert(target, t1, anchor);
 			mount_component(portfolio, target, anchor);
 			current = true;
 		},
 		i(local) {
 			if (current) return;
+			transition_in(timer.$$.fragment, local);
 			transition_in(tradingengine.$$.fragment, local);
 			transition_in(portfolio.$$.fragment, local);
 			current = true;
 		},
 		o(local) {
+			transition_out(timer.$$.fragment, local);
 			transition_out(tradingengine.$$.fragment, local);
 			transition_out(portfolio.$$.fragment, local);
 			current = false;
 		},
 		d(detaching) {
+			destroy_component(timer, detaching);
+			if (detaching) detach(t0);
 			destroy_component(tradingengine, detaching);
-			if (detaching) detach(t);
+			if (detaching) detach(t1);
 			destroy_component(portfolio, detaching);
 		}
 	};
