@@ -38,8 +38,8 @@
         <Intro bind:beginTrading />
       {:else}
         <div transition:fade>
-          <Timer timerStart={'2:30'} />
           {#if !$gameOver}
+            <Timer timerStart={'2:30'} />
             <TradingEngine />
             <Portfolio />
           {:else}
