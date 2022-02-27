@@ -1,11 +1,11 @@
-# cv-ml-trader-ui
+# ml-cv-trader-ui
 
-cv-ml-trader - short for 'computer vision-machine learning-trader' - is a a demo/experiment that
+ml-vc-trader - short for 'computer vision-machine learning-trader' - is a a demo/experiment that
 runs gesture recognition from your webcam's video stream in order to determine whether to buy or
 sell stocks while consuming a simulated market data feed over Solace PubSub+ and sending the end
 result back to Solace for processing on the server side.
 
-## Installing svelte/svelte kit
+## Installing svelte
 
 This project uses the svelte javascript framework for the ui component. Install it and the associated dependencies by running the following command:
 

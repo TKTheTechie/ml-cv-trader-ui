@@ -37,8 +37,8 @@
 				<Intro />
 			{:else}
 				<div transition:fade>
-					<Timer timerStart={'2:30'} />
 					{#if !$gameOver}
+						<Timer timerStart={'2:30'} />
 						<TradingEngine />
 						<Portfolio />
 					{:else}
@@ -49,14 +49,3 @@
 		</div>
 	</div>
 </section>
-
-<style>
-	.canvasbox {
-		border-radius: 3px;
-		margin-right: 10px;
-		width: 450px;
-		height: 338px;
-		border-bottom: 3px solid #0063ff;
-		box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 #00000030;
-	}
-</style>

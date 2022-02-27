@@ -90,7 +90,9 @@
 				style="width:{videoDimension}px;height:{videoDimension}px"
 				width="{videoDimension}px"
 				height="{videoDimension}px"
-			/>
+			>
+				<track kind="captions" />
+			</video>
 		</center>
 		<span class="signal signal-{$signalStore} text-4xl">{$signalStore}</span>
 		<div class="grid grid-cols-12">
