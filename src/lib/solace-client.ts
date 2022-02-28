@@ -152,7 +152,6 @@ export class SolaceClient {
 
      //Message callback function
       this.session.on(solace.SessionEventCode.MESSAGE, (message:solace.Message) => {
-        log.info(message.dump());
 
       //Get the topic name from the message's destination
       let topicName: string = message.getDestination().getName();
@@ -176,7 +175,7 @@ export class SolaceClient {
             if (regexdSub.split("/").length != topicName.split("/").length) return;
           }
           //Proceed with the message callback for the topic subscription if the subscription is active
-          if (this.topicSubscriptions.get(sub).isSubscribed && this.topicSubscriptions.get(sub).callback != null) log.info(`Got callback for ${sub}`);
+          if (this.topicSubscriptions.get(sub).isSubscribed && this.topicSubscriptions.get(sub).callback != null) log.debug(`Got callback for ${sub}`);
           this.topicSubscriptions.get(sub).callback(message);
         }
       }

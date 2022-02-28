@@ -23,22 +23,27 @@
       console.log('Publishing new session event...');
       solaceClient.publishToTopic('tkthetechie/new/trading/session', '{"initials":"' + initials + '"}', solace.MessageDeliveryModeType.PERSISTENT);
       let traderSession: TraderSession;
-      fetch('https://api.ipify.org?format=json')
-        .then((response) => response.json())
-        .then((val) => {
-          traderSession = new TraderSession(initials, val.ip);
-          console.log('Trader: ' + JSON.stringify(traderSession) + ' logged in');
-        })
-        .catch((err) => {
-          console.log('Unable to determine ip-address of user ' + initials);
-          traderSession = new TraderSession(initials, '-');
-        })
-        .finally(() => {
-          traderSessionStore.updateSession(traderSession);
-          validForm = true;
-          beginTrading = true;
-          signalStore.updateSignal(Signal.INIT);
-        });
+      traderSession = new TraderSession(initials, '-');
+      traderSessionStore.updateSession(traderSession);
+      validForm = true;
+      beginTrading = true;
+      signalStore.updateSignal(Signal.INIT);
+      // fetch('https://api.ipify.org?format=json')
+      //   .then((response) => response.json())
+      //   .then((val) => {
+      //     traderSession = new TraderSession(initials, val.ip);
+      //     console.log('Trader: ' + JSON.stringify(traderSession) + ' logged in');
+      //   })
+      //   .catch((err) => {
+      //     console.log('Unable to determine ip-address of user ' + initials);
+      //     traderSession = new TraderSession(initials, '-');
+      //   })
+      //   .finally(() => {
+      //     traderSessionStore.updateSession(traderSession);
+      // validForm = true;
+      // beginTrading = true;
+      // signalStore.updateSignal(Signal.INIT);
+      //   });
     } else {
       validForm = false;
     }
