@@ -77,7 +77,7 @@
     sell stocks while consuming a simulated market data feed over Solace PubSub+ and sending the end result back to Solace for processing on the server side.
     <br />
     <br />
-    There are three gestures that can be detected - try them now (use your right hand and away from your face as shown in the images below for best results):
+    There are three gestures that can be detected - try them now (use your right hand, against a clear background and away from your face as shown in the images below for best results):
 
     <div class="grid grid-cols-3  mt-5">
       <div class="items-center">
