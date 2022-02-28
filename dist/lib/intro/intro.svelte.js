@@ -115,7 +115,7 @@ function create_fragment(ctx) {
 			br0 = element("br");
 			t3 = space();
 			br1 = element("br");
-			t4 = text("\n    There are three gestures that can be detected - try them now (use your right hand and away from your face as shown in the images):\n\n    ");
+			t4 = text("\n    There are three gestures that can be detected - try them now (use your right hand and away from your face as shown in the images below for best results):\n\n    ");
 			div10 = element("div");
 			div1 = element("div");
 			div1.innerHTML = `<center><img height="90px" width="126px" alt="BUY" src="buy.png"/></center>`;
