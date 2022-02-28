@@ -7,6 +7,7 @@
   import { SolaceClient, SOLACE_CLIENT_CONTEXT_KEY } from './lib/solace-client';
   import { fade } from 'svelte/transition';
   import Timer from './lib/timer/timer.svelte';
+  import Header from './lib/header/Header.svelte';
   import { gameOver } from './lib/store/store';
   import GameOver from './lib/game-over/game-over.svelte';
   import './app.css';
@@ -29,6 +30,7 @@
 </svelte:head>
 
 <section class="text-gray-100 bg-black">
+  <Header />
   <div class="grid grid-cols-2 align-top">
     <div class="flex justify-end w-full align-top text-center lg: -ml-10">
       <SignalTracker />
@@ -39,7 +41,7 @@
       {:else}
         <div transition:fade>
           {#if !$gameOver}
-            <Timer timerStart={'2:30'} />
+            <Timer timerStart={'1:00'} />
             <TradingEngine />
             <Portfolio />
           {:else}
