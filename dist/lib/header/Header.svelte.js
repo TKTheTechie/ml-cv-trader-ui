@@ -45,7 +45,7 @@ function create_fragment(ctx) {
 			a = element("a");
 			create_component(icon.$$.fragment);
 			attr(span, "class", "relative header-text z-10 flex items-center w-auto text-2xl font-extrabold leading-none text-green-500 select-none svelte-m76vwu");
-			attr(a, "href", "https://github.com/TKTheTechie/cv-ml-trader-ui");
+			attr(a, "href", "https://github.com/TKTheTechie/ml-cv-trader-ui");
 			attr(a, "class", "relative text-lg leading-6 dark:text-white transition duration-150 ease-out hover:text-slate-500");
 			attr(a, "target", "_blank");
 			attr(nav, "class", "top-0 left-0 z-0 flex items-center justify-center w-full h-full py-5 -ml-0 space-x-5 text-base md:-ml-5 md:py-0 md:absolute");

@@ -32,6 +32,7 @@ import Portfolio from './lib/portfolio/portfolio.svelte.js';
 import { SolaceClient, SOLACE_CLIENT_CONTEXT_KEY } from './lib/solace-client.js';
 import { fade } from '../_snowpack/pkg/svelte/transition.js';
 import Timer from './lib/timer/timer.svelte.js';
+import Header from './lib/header/Header.svelte.js';
 import { gameOver } from './lib/store/store.js';
 import GameOver from './lib/game-over/game-over.svelte.js';
 import './app.css.proxy.js';
@@ -113,7 +114,7 @@ function create_else_block(ctx) {
 	};
 }
 
-// (32:6) {#if !beginTrading}
+// (34:6) {#if !beginTrading}
 function create_if_block(ctx) {
 	let intro;
 	let updating_beginTrading;
@@ -166,7 +167,7 @@ function create_if_block(ctx) {
 	};
 }
 
-// (40:10) {:else}
+// (42:10) {:else}
 function create_else_block_1(ctx) {
 	let gameover;
 	let current;
@@ -195,7 +196,7 @@ function create_else_block_1(ctx) {
 	};
 }
 
-// (36:10) {#if !$gameOver}
+// (38:10) {#if !$gameOver}
 function create_if_block_1(ctx) {
 	let timer;
 	let t0;
@@ -203,7 +204,7 @@ function create_if_block_1(ctx) {
 	let t1;
 	let portfolio;
 	let current;
-	timer = new Timer({ props: { timerStart: '2:30' } });
+	timer = new Timer({ props: { timerStart: '1:00' } });
 	tradingengine = new TradingEngine({});
 	portfolio = new Portfolio({});
 
@@ -249,14 +250,17 @@ function create_if_block_1(ctx) {
 function create_fragment(ctx) {
 	let t0;
 	let section;
+	let header;
+	let t1;
 	let div2;
 	let div0;
 	let signaltracker;
-	let t1;
+	let t2;
 	let div1;
 	let current_block_type_index;
 	let if_block;
 	let current;
+	header = new Header({});
 	signaltracker = new SignalTracker({});
 	const if_block_creators = [create_if_block, create_else_block];
 	const if_blocks = [];
@@ -273,10 +277,12 @@ function create_fragment(ctx) {
 		c() {
 			t0 = space();
 			section = element("section");
+			create_component(header.$$.fragment);
+			t1 = space();
 			div2 = element("div");
 			div0 = element("div");
 			create_component(signaltracker.$$.fragment);
-			t1 = space();
+			t2 = space();
 			div1 = element("div");
 			if_block.c();
 			document.title = "Home";
@@ -288,10 +294,12 @@ function create_fragment(ctx) {
 		m(target, anchor) {
 			insert(target, t0, anchor);
 			insert(target, section, anchor);
+			mount_component(header, section, null);
+			append(section, t1);
 			append(section, div2);
 			append(div2, div0);
 			mount_component(signaltracker, div0, null);
-			append(div2, t1);
+			append(div2, t2);
 			append(div2, div1);
 			if_blocks[current_block_type_index].m(div1, null);
 			current = true;
@@ -325,11 +333,13 @@ function create_fragment(ctx) {
 		},
 		i(local) {
 			if (current) return;
+			transition_in(header.$$.fragment, local);
 			transition_in(signaltracker.$$.fragment, local);
 			transition_in(if_block);
 			current = true;
 		},
 		o(local) {
+			transition_out(header.$$.fragment, local);
 			transition_out(signaltracker.$$.fragment, local);
 			transition_out(if_block);
 			current = false;
@@ -337,6 +347,7 @@ function create_fragment(ctx) {
 		d(detaching) {
 			if (detaching) detach(t0);
 			if (detaching) detach(section);
+			destroy_component(header);
 			destroy_component(signaltracker);
 			if_blocks[current_block_type_index].d();
 		}

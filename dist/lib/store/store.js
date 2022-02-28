@@ -35,7 +35,7 @@ function createSignalStore(initialValue = Signal.INIT) {
     }
   };
 }
-function createPortfolioStore(initialValue = new Portfolio(25, 1e3)) {
+function createPortfolioStore(initialValue = new Portfolio(15, 500)) {
   const {subscribe, update} = writable(initialValue);
   return {
     subscribe,
