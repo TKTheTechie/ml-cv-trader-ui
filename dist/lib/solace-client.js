@@ -88,7 +88,6 @@ export class SolaceClient {
         }
       });
       this.session.on(solace.SessionEventCode.MESSAGE, (message) => {
-        log.info(message.dump());
         let topicName = message.getDestination().getName();
         for (let sub of Array.from(this.topicSubscriptions.keys())) {
           let regexdSub = sub.replace(/\*/g, ".*");
@@ -101,7 +100,7 @@ export class SolaceClient {
                 return;
             }
             if (this.topicSubscriptions.get(sub).isSubscribed && this.topicSubscriptions.get(sub).callback != null)
-              log.info(`Got callback for ${sub}`);
+              log.debug(`Got callback for ${sub}`);
             this.topicSubscriptions.get(sub).callback(message);
           }
         }
