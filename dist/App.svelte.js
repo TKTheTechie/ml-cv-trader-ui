@@ -167,7 +167,7 @@ function create_if_block(ctx) {
 	};
 }
 
-// (42:10) {:else}
+// (43:10) {:else}
 function create_else_block_1(ctx) {
 	let gameover;
 	let current;
@@ -196,7 +196,7 @@ function create_else_block_1(ctx) {
 	};
 }
 
-// (38:10) {#if !$gameOver}
+// (39:10) {#if !$gameOver}
 function create_if_block_1(ctx) {
 	let timer;
 	let t0;
