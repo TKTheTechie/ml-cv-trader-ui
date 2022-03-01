@@ -5,7 +5,6 @@
   let stonks: number, cash: number;
 
   const unsubscribe = portfolioStore.subscribe((portfolio: Portfolio) => {
-    console.log(portfolio);
     stonks = portfolio.stonks;
     cash = portfolio.cash;
   });

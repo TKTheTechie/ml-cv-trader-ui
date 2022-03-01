@@ -68,9 +68,11 @@
 
   onMount(async () => {
     //submit high score on load
-    let leaderEntry: LeaderEntry = new LeaderEntry($traderSessionStore.initials, $traderSessionStore.ip_address, $portfolioStore.cash, new Date());
-    solaceClient.publishToTopic('tkthetechie/leader/entry/' + $traderSessionStore.initials, JSON.stringify(leaderEntry), solace.MessageDeliveryModeType.PERSISTENT);
-    loadLeaderboard();
+    setTimeout(() => {
+      let leaderEntry: LeaderEntry = new LeaderEntry($traderSessionStore.initials, $traderSessionStore.ip_address, $portfolioStore.cash, new Date());
+      solaceClient.publishToTopic('tkthetechie/leader/entry/' + $traderSessionStore.initials, JSON.stringify(leaderEntry), solace.MessageDeliveryModeType.PERSISTENT);
+      loadLeaderboard();
+    }, 2000);
   });
 </script>
 
