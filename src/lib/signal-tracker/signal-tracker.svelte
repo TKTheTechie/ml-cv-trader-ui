@@ -70,7 +70,6 @@
   });
 </script>
 
-<svelte:window bind:innerWidth={windowWidth} bind:innerHeight={windowHeight} />
 <section>
   <div class="bg-gray-900 p-2 rounded mt-4 shadow-xl h-fit w-full">
     {#if !videoStatus}
@@ -79,7 +78,7 @@
       </center>
     {/if}
     <center
-      ><video class="videobox" id="webcam" style="width:{videoDimension}px;height:{videoDimension}px" width="{videoDimension}px" height="{videoDimension}px">
+      ><video class="videobox" id="webcam" style="width:{videoDimension}px;height:{videoDimension}px">
         <track kind="captions" />
       </video>
     </center>

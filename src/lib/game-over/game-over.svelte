@@ -1,7 +1,7 @@
 <script lang="ts">
   import { portfolioStore, traderSessionStore } from '../store/store';
   import { SolaceClient, SOLACE_CLIENT_CONTEXT_KEY } from '../solace-client';
-  import { getContext } from 'svelte';
+  import { getContext, onMount } from 'svelte';
   import solace from 'solclientjs';
   import { Moon } from 'svelte-loading-spinners';
   import { DateTime } from 'luxon';
@@ -34,20 +34,15 @@
 
   let solaceClient: SolaceClient = getContext(SOLACE_CLIENT_CONTEXT_KEY);
 
-  let highScoreSubmitted = false;
-  let highScoreLoading = false;
+  let highScoreLoading = true;
 
   function formatTime(dateString: string): string {
     if (dateString && dateString != '') return DateTime.fromISO(dateString).toFormat('MMM dd,yyyy');
     else return '-';
   }
 
-  function submitHighScore() {
+  function loadLeaderboard() {
     highScoreLoading = true;
-    highScoreSubmitted = true;
-
-    let leaderEntry: LeaderEntry = new LeaderEntry($traderSessionStore.initials, $traderSessionStore.ip_address, $portfolioStore.cash, new Date());
-    solaceClient.publishToTopic('tkthetechie/leader/entry/' + $traderSessionStore.initials, JSON.stringify(leaderEntry), solace.MessageDeliveryModeType.PERSISTENT);
 
     setTimeout(() => {
       solaceClient.sendRequest(
@@ -70,23 +65,25 @@
     // 		});
     // }, 2000);
   }
+
+  onMount(async () => {
+    //submit high score on load
+    let leaderEntry: LeaderEntry = new LeaderEntry($traderSessionStore.initials, $traderSessionStore.ip_address, $portfolioStore.cash, new Date());
+    solaceClient.publishToTopic('tkthetechie/leader/entry/' + $traderSessionStore.initials, JSON.stringify(leaderEntry), solace.MessageDeliveryModeType.PERSISTENT);
+    loadLeaderboard();
+  });
 </script>
 
 <section>
-  {#if !highScoreSubmitted}
-    <div class="flex w-full game-over-text h-full">
-      <div class="text-lg justify-center items-center align-middle h-full">
-        <h1 class="text-4xl text-white">CONGRATULATIONS!</h1>
-        You've completed your trading session and have walked away with ${$portfolioStore.cash.toLocaleString()}. There is nothing left to do right now but party... or you can submit your highscore to
-        the leaderboard!
-        <center>
-          <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full " on:click={submitHighScore}> SUBMIT HIGH SCORE </button>
-        </center>
-      </div>
+  <div class="flex w-full game-over-text h-full">
+    <div class="text-lg justify-center items-center align-middle h-full">
+      <h1 class="text-4xl text-white">CONGRATULATIONS!</h1>
+      You've completed your trading session and have walked away with ${$portfolioStore.cash.toLocaleString()}. There is nothing left to do right now but party!
     </div>
-  {:else if highScoreLoading}
+  </div>
+  {#if highScoreLoading}
     <center>
-      <Moon size="60" color="#FF3E00" unit="px" duration="2s" /> Loading Leaedrboard...
+      <Moon size="60" color="#FF3E00" unit="px" duration="2s" /> Loading Leaderboard...
     </center>
   {:else}
     <div class="grid grid-cols-4 w-full text-center">
@@ -105,9 +102,3 @@
     </div>
   {/if}
 </section>
-
-<style>
-  .game-over-text {
-    font-family: 'VT323', monospace;
-  }
-</style>
