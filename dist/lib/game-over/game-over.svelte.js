@@ -39,7 +39,7 @@ function get_each_context(ctx, list, i) {
 	return child_ctx;
 }
 
-// (102:2) {:else}
+// (104:2) {:else}
 function create_else_block(ctx) {
 	let div5;
 	let div0;
@@ -135,7 +135,7 @@ function create_else_block(ctx) {
 	};
 }
 
-// (98:2) {#if highScoreLoading}
+// (100:2) {#if highScoreLoading}
 function create_if_block(ctx) {
 	let center;
 	let moon;
@@ -180,7 +180,7 @@ function create_if_block(ctx) {
 	};
 }
 
-// (110:6) {#each leaderboard as { initials, score, timestamp }
+// (112:6) {#each leaderboard as { initials, score, timestamp }
 function create_each_block(ctx) {
 	let div0;
 	let t0_value = /*i*/ ctx[13] + 1 + "";
@@ -436,10 +436,14 @@ function instance($$self, $$props, $$invalidate) {
 	// }, 2000);
 	onMount(async () => {
 		//submit high score on load
-		let leaderEntry = new LeaderEntry($traderSessionStore.initials, $traderSessionStore.ip_address, $portfolioStore.cash, new Date());
-
-		solaceClient.publishToTopic('tkthetechie/leader/entry/' + $traderSessionStore.initials, JSON.stringify(leaderEntry), solace.MessageDeliveryModeType.PERSISTENT);
-		loadLeaderboard();
+		setTimeout(
+			() => {
+				let leaderEntry = new LeaderEntry($traderSessionStore.initials, $traderSessionStore.ip_address, $portfolioStore.cash, new Date());
+				solaceClient.publishToTopic('tkthetechie/leader/entry/' + $traderSessionStore.initials, JSON.stringify(leaderEntry), solace.MessageDeliveryModeType.PERSISTENT);
+				loadLeaderboard();
+			},
+			2000
+		);
 	});
 
 	return [leaderboard, highScoreLoading, $portfolioStore, formatTime];

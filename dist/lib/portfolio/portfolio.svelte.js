@@ -91,7 +91,6 @@ function instance($$self, $$props, $$invalidate) {
 	let stonks, cash;
 
 	const unsubscribe = portfolioStore.subscribe(portfolio => {
-		console.log(portfolio);
 		$$invalidate(0, stonks = portfolio.stonks);
 		$$invalidate(1, cash = portfolio.cash);
 	});
