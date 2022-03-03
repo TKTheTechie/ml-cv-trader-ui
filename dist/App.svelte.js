@@ -18,6 +18,7 @@ import {
 	init,
 	insert,
 	mount_component,
+	noop,
 	safe_not_equal,
 	space,
 	transition_in,
@@ -36,18 +37,140 @@ import Header from './lib/header/Header.svelte.js';
 import { gameOver } from './lib/store/store.js';
 import GameOver from './lib/game-over/game-over.svelte.js';
 import './app.css.proxy.js';
+import Leaderboard from './lib/leaderboard/leaderboard.svelte.js';
 
 function create_else_block(ctx) {
+	let div2;
+	let div0;
+	let signaltracker;
+	let t;
+	let div1;
+	let current;
+	signaltracker = new SignalTracker({});
+	let if_block = !/*beginTrading*/ ctx[0] && create_if_block_1(ctx);
+
+	return {
+		c() {
+			div2 = element("div");
+			div0 = element("div");
+			create_component(signaltracker.$$.fragment);
+			t = space();
+			div1 = element("div");
+			if (if_block) if_block.c();
+			attr(div0, "class", "flex justify-end w-full align-top text-center lg: -ml-10");
+			attr(div1, "class", "w-5/6 lg:max-w-lg ml-2 lg:w-full lg:h-full lg:max-h-lg md:w-1/2 ");
+			attr(div2, "class", "grid grid-cols-2 align-top");
+		},
+		m(target, anchor) {
+			insert(target, div2, anchor);
+			append(div2, div0);
+			mount_component(signaltracker, div0, null);
+			append(div2, t);
+			append(div2, div1);
+			if (if_block) if_block.m(div1, null);
+			current = true;
+		},
+		p(ctx, dirty) {
+			if (!/*beginTrading*/ ctx[0]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+
+					if (dirty & /*beginTrading*/ 1) {
+						transition_in(if_block, 1);
+					}
+				} else {
+					if_block = create_if_block_1(ctx);
+					if_block.c();
+					transition_in(if_block, 1);
+					if_block.m(div1, null);
+				}
+			} else if (if_block) {
+				group_outros();
+
+				transition_out(if_block, 1, 1, () => {
+					if_block = null;
+				});
+
+				check_outros();
+			}
+		},
+		i(local) {
+			if (current) return;
+			transition_in(signaltracker.$$.fragment, local);
+			transition_in(if_block);
+			current = true;
+		},
+		o(local) {
+			transition_out(signaltracker.$$.fragment, local);
+			transition_out(if_block);
+			current = false;
+		},
+		d(detaching) {
+			if (detaching) detach(div2);
+			destroy_component(signaltracker);
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+// (33:2) {#if showLeaderboard}
+function create_if_block(ctx) {
+	let leaderboard;
+	let current;
+	leaderboard = new Leaderboard({ props: { numberOfEntries: 25 } });
+
+	return {
+		c() {
+			create_component(leaderboard.$$.fragment);
+		},
+		m(target, anchor) {
+			mount_component(leaderboard, target, anchor);
+			current = true;
+		},
+		p: noop,
+		i(local) {
+			if (current) return;
+			transition_in(leaderboard.$$.fragment, local);
+			current = true;
+		},
+		o(local) {
+			transition_out(leaderboard.$$.fragment, local);
+			current = false;
+		},
+		d(detaching) {
+			destroy_component(leaderboard, detaching);
+		}
+	};
+}
+
+// (41:8) {#if !beginTrading}
+function create_if_block_1(ctx) {
+	let intro;
+	let updating_beginTrading;
+	let t;
 	let div;
 	let current_block_type_index;
 	let if_block;
 	let div_transition;
 	let current;
-	const if_block_creators = [create_if_block_1, create_else_block_1];
+
+	function intro_beginTrading_binding(value) {
+		/*intro_beginTrading_binding*/ ctx[3](value);
+	}
+
+	let intro_props = {};
+
+	if (/*beginTrading*/ ctx[0] !== void 0) {
+		intro_props.beginTrading = /*beginTrading*/ ctx[0];
+	}
+
+	intro = new Intro({ props: intro_props });
+	binding_callbacks.push(() => bind(intro, 'beginTrading', intro_beginTrading_binding));
+	const if_block_creators = [create_if_block_2, create_else_block_1];
 	const if_blocks = [];
 
 	function select_block_type_1(ctx, dirty) {
-		if (!/*$gameOver*/ ctx[1]) return 0;
+		if (!/*$gameOver*/ ctx[2]) return 0;
 		return 1;
 	}
 
@@ -56,15 +179,28 @@ function create_else_block(ctx) {
 
 	return {
 		c() {
+			create_component(intro.$$.fragment);
+			t = space();
 			div = element("div");
 			if_block.c();
 		},
 		m(target, anchor) {
+			mount_component(intro, target, anchor);
+			insert(target, t, anchor);
 			insert(target, div, anchor);
 			if_blocks[current_block_type_index].m(div, null);
 			current = true;
 		},
 		p(ctx, dirty) {
+			const intro_changes = {};
+
+			if (!updating_beginTrading && dirty & /*beginTrading*/ 1) {
+				updating_beginTrading = true;
+				intro_changes.beginTrading = /*beginTrading*/ ctx[0];
+				add_flush_callback(() => updating_beginTrading = false);
+			}
+
+			intro.$set(intro_changes);
 			let previous_block_index = current_block_type_index;
 			current_block_type_index = select_block_type_1(ctx, dirty);
 
@@ -91,6 +227,7 @@ function create_else_block(ctx) {
 		},
 		i(local) {
 			if (current) return;
+			transition_in(intro.$$.fragment, local);
 			transition_in(if_block);
 
 			add_render_callback(() => {
@@ -101,12 +238,15 @@ function create_else_block(ctx) {
 			current = true;
 		},
 		o(local) {
+			transition_out(intro.$$.fragment, local);
 			transition_out(if_block);
 			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
 			div_transition.run(0);
 			current = false;
 		},
 		d(detaching) {
+			destroy_component(intro, detaching);
+			if (detaching) detach(t);
 			if (detaching) detach(div);
 			if_blocks[current_block_type_index].d();
 			if (detaching && div_transition) div_transition.end();
@@ -114,60 +254,7 @@ function create_else_block(ctx) {
 	};
 }
 
-// (34:6) {#if !beginTrading}
-function create_if_block(ctx) {
-	let intro;
-	let updating_beginTrading;
-	let current;
-
-	function intro_beginTrading_binding(value) {
-		/*intro_beginTrading_binding*/ ctx[2](value);
-	}
-
-	let intro_props = {};
-
-	if (/*beginTrading*/ ctx[0] !== void 0) {
-		intro_props.beginTrading = /*beginTrading*/ ctx[0];
-	}
-
-	intro = new Intro({ props: intro_props });
-	binding_callbacks.push(() => bind(intro, 'beginTrading', intro_beginTrading_binding));
-
-	return {
-		c() {
-			create_component(intro.$$.fragment);
-		},
-		m(target, anchor) {
-			mount_component(intro, target, anchor);
-			current = true;
-		},
-		p(ctx, dirty) {
-			const intro_changes = {};
-
-			if (!updating_beginTrading && dirty & /*beginTrading*/ 1) {
-				updating_beginTrading = true;
-				intro_changes.beginTrading = /*beginTrading*/ ctx[0];
-				add_flush_callback(() => updating_beginTrading = false);
-			}
-
-			intro.$set(intro_changes);
-		},
-		i(local) {
-			if (current) return;
-			transition_in(intro.$$.fragment, local);
-			current = true;
-		},
-		o(local) {
-			transition_out(intro.$$.fragment, local);
-			current = false;
-		},
-		d(detaching) {
-			destroy_component(intro, detaching);
-		}
-	};
-}
-
-// (43:10) {:else}
+// (48:12) {:else}
 function create_else_block_1(ctx) {
 	let gameover;
 	let current;
@@ -196,8 +283,8 @@ function create_else_block_1(ctx) {
 	};
 }
 
-// (39:10) {#if !$gameOver}
-function create_if_block_1(ctx) {
+// (44:12) {#if !$gameOver}
+function create_if_block_2(ctx) {
 	let timer;
 	let t0;
 	let tradingengine;
@@ -252,21 +339,15 @@ function create_fragment(ctx) {
 	let section;
 	let header;
 	let t1;
-	let div2;
-	let div0;
-	let signaltracker;
-	let t2;
-	let div1;
 	let current_block_type_index;
 	let if_block;
 	let current;
 	header = new Header({});
-	signaltracker = new SignalTracker({});
 	const if_block_creators = [create_if_block, create_else_block];
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
-		if (!/*beginTrading*/ ctx[0]) return 0;
+		if (/*showLeaderboard*/ ctx[1]) return 0;
 		return 1;
 	}
 
@@ -279,16 +360,8 @@ function create_fragment(ctx) {
 			section = element("section");
 			create_component(header.$$.fragment);
 			t1 = space();
-			div2 = element("div");
-			div0 = element("div");
-			create_component(signaltracker.$$.fragment);
-			t2 = space();
-			div1 = element("div");
 			if_block.c();
 			document.title = "Home";
-			attr(div0, "class", "flex justify-end w-full align-top text-center lg: -ml-10");
-			attr(div1, "class", "w-5/6 lg:max-w-lg ml-2 lg:w-full lg:h-full lg:max-h-lg md:w-1/2 ");
-			attr(div2, "class", "grid grid-cols-2 align-top");
 			attr(section, "class", "text-gray-100 bg-black");
 		},
 		m(target, anchor) {
@@ -296,12 +369,7 @@ function create_fragment(ctx) {
 			insert(target, section, anchor);
 			mount_component(header, section, null);
 			append(section, t1);
-			append(section, div2);
-			append(div2, div0);
-			mount_component(signaltracker, div0, null);
-			append(div2, t2);
-			append(div2, div1);
-			if_blocks[current_block_type_index].m(div1, null);
+			if_blocks[current_block_type_index].m(section, null);
 			current = true;
 		},
 		p(ctx, [dirty]) {
@@ -328,19 +396,17 @@ function create_fragment(ctx) {
 				}
 
 				transition_in(if_block, 1);
-				if_block.m(div1, null);
+				if_block.m(section, null);
 			}
 		},
 		i(local) {
 			if (current) return;
 			transition_in(header.$$.fragment, local);
-			transition_in(signaltracker.$$.fragment, local);
 			transition_in(if_block);
 			current = true;
 		},
 		o(local) {
 			transition_out(header.$$.fragment, local);
-			transition_out(signaltracker.$$.fragment, local);
 			transition_out(if_block);
 			current = false;
 		},
@@ -348,7 +414,6 @@ function create_fragment(ctx) {
 			if (detaching) detach(t0);
 			if (detaching) detach(section);
 			destroy_component(header);
-			destroy_component(signaltracker);
 			if_blocks[current_block_type_index].d();
 		}
 	};
@@ -356,13 +421,16 @@ function create_fragment(ctx) {
 
 function instance($$self, $$props, $$invalidate) {
 	let $gameOver;
-	component_subscribe($$self, gameOver, $$value => $$invalidate(1, $gameOver = $$value));
+	component_subscribe($$self, gameOver, $$value => $$invalidate(2, $gameOver = $$value));
 	let beginTrading = false;
+	let showLeaderboard = false;
 	let solaceClient = new SolaceClient();
 	setContext(SOLACE_CLIENT_CONTEXT_KEY, solaceClient);
 
 	onMount(async () => {
 		solaceClient.connect().then(() => {
+			const urlParams = new URLSearchParams(window.location.search);
+			$$invalidate(1, showLeaderboard = urlParams.has('showLeaderboard'));
 			console.log('Solace Connected!!!');
 		});
 	});
@@ -372,7 +440,7 @@ function instance($$self, $$props, $$invalidate) {
 		$$invalidate(0, beginTrading);
 	}
 
-	return [beginTrading, $gameOver, intro_beginTrading_binding];
+	return [beginTrading, showLeaderboard, $gameOver, intro_beginTrading_binding];
 }
 
 class App extends SvelteComponent {
