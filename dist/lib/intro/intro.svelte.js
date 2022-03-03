@@ -167,14 +167,18 @@ function create_fragment(ctx) {
 			button.textContent = "BEGIN TRADING";
 			attr(div0, "class", "flex flex-col w-full items-center");
 			attr(a0, "href", "https://solace.com/try-it-now/");
+			attr(a0, "target", "_blank");
+			attr(a0, "class", "svelte-15jycoh");
 			attr(a1, "href", "https://www.solace.com");
+			attr(a1, "target", "_blank");
+			attr(a1, "class", "svelte-15jycoh");
 			attr(div1, "class", "items-center");
 			attr(div4, "class", "text-center signal signal-BUY text-xl h-fit shrink");
 			attr(div5, "class", "text-center signal signal-SELL text-xl h-fit shrink");
 			attr(div6, "class", "text-center signal signal-HOLD text-xl h-fit shrink");
-			attr(div7, "class", div7_class_value = "text-center h-fit shrink " + (/*buyDone*/ ctx[0] ? 'done' : 'not-done') + "" + " svelte-j3bkcv");
-			attr(div8, "class", div8_class_value = "text-center h-fit shrink " + (/*sellDone*/ ctx[1] ? 'done' : 'not-done') + " svelte-j3bkcv");
-			attr(div9, "class", div9_class_value = "text-center h-fit shrink " + (/*holdDone*/ ctx[2] ? 'done' : 'not-done') + " svelte-j3bkcv");
+			attr(div7, "class", div7_class_value = "text-center h-fit shrink " + (/*buyDone*/ ctx[0] ? 'done' : 'not-done') + "" + " svelte-15jycoh");
+			attr(div8, "class", div8_class_value = "text-center h-fit shrink " + (/*sellDone*/ ctx[1] ? 'done' : 'not-done') + " svelte-15jycoh");
+			attr(div9, "class", div9_class_value = "text-center h-fit shrink " + (/*holdDone*/ ctx[2] ? 'done' : 'not-done') + " svelte-15jycoh");
 			attr(div10, "class", "grid grid-cols-3 mt-5");
 			attr(label, "class", "block uppercase tracking-wide text-white-700 text-xs font-bold mb-2");
 			attr(label, "for", "initials");
@@ -185,7 +189,7 @@ function create_fragment(ctx) {
 			attr(input, "maxlength", "2");
 			attr(button, "class", "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full ");
 			attr(div11, "class", "w-full items-center text-center mt-10");
-			attr(div12, "class", "text-xl tracking-tighter text-white intro-text svelte-j3bkcv");
+			attr(div12, "class", "text-xl tracking-tighter text-white intro-text svelte-15jycoh");
 		},
 		m(target, anchor) {
 			insert(target, section, anchor);
@@ -245,15 +249,15 @@ function create_fragment(ctx) {
 			}
 		},
 		p(ctx, [dirty]) {
-			if (!current || dirty & /*buyDone*/ 1 && div7_class_value !== (div7_class_value = "text-center h-fit shrink " + (/*buyDone*/ ctx[0] ? 'done' : 'not-done') + "" + " svelte-j3bkcv")) {
+			if (!current || dirty & /*buyDone*/ 1 && div7_class_value !== (div7_class_value = "text-center h-fit shrink " + (/*buyDone*/ ctx[0] ? 'done' : 'not-done') + "" + " svelte-15jycoh")) {
 				attr(div7, "class", div7_class_value);
 			}
 
-			if (!current || dirty & /*sellDone*/ 2 && div8_class_value !== (div8_class_value = "text-center h-fit shrink " + (/*sellDone*/ ctx[1] ? 'done' : 'not-done') + " svelte-j3bkcv")) {
+			if (!current || dirty & /*sellDone*/ 2 && div8_class_value !== (div8_class_value = "text-center h-fit shrink " + (/*sellDone*/ ctx[1] ? 'done' : 'not-done') + " svelte-15jycoh")) {
 				attr(div8, "class", div8_class_value);
 			}
 
-			if (!current || dirty & /*holdDone*/ 4 && div9_class_value !== (div9_class_value = "text-center h-fit shrink " + (/*holdDone*/ ctx[2] ? 'done' : 'not-done') + " svelte-j3bkcv")) {
+			if (!current || dirty & /*holdDone*/ 4 && div9_class_value !== (div9_class_value = "text-center h-fit shrink " + (/*holdDone*/ ctx[2] ? 'done' : 'not-done') + " svelte-15jycoh")) {
 				attr(div9, "class", div9_class_value);
 			}
 
