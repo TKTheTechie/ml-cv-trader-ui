@@ -45,9 +45,20 @@ function create_else_block(ctx) {
 	let signaltracker;
 	let t;
 	let div1;
+	let current_block_type_index;
+	let if_block;
 	let current;
 	signaltracker = new SignalTracker({});
-	let if_block = !/*beginTrading*/ ctx[0] && create_if_block_1(ctx);
+	const if_block_creators = [create_if_block_1, create_else_block_1];
+	const if_blocks = [];
+
+	function select_block_type_1(ctx, dirty) {
+		if (!/*beginTrading*/ ctx[0]) return 0;
+		return 1;
+	}
+
+	current_block_type_index = select_block_type_1(ctx, -1);
+	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
 	return {
 		c() {
@@ -56,7 +67,7 @@ function create_else_block(ctx) {
 			create_component(signaltracker.$$.fragment);
 			t = space();
 			div1 = element("div");
-			if (if_block) if_block.c();
+			if_block.c();
 			attr(div0, "class", "flex justify-end w-full align-top text-center lg: -ml-10");
 			attr(div1, "class", "w-5/6 lg:max-w-lg ml-2 lg:w-full lg:h-full lg:max-h-lg md:w-1/2 ");
 			attr(div2, "class", "grid grid-cols-2 align-top");
@@ -67,31 +78,34 @@ function create_else_block(ctx) {
 			mount_component(signaltracker, div0, null);
 			append(div2, t);
 			append(div2, div1);
-			if (if_block) if_block.m(div1, null);
+			if_blocks[current_block_type_index].m(div1, null);
 			current = true;
 		},
 		p(ctx, dirty) {
-			if (!/*beginTrading*/ ctx[0]) {
-				if (if_block) {
-					if_block.p(ctx, dirty);
+			let previous_block_index = current_block_type_index;
+			current_block_type_index = select_block_type_1(ctx, dirty);
 
-					if (dirty & /*beginTrading*/ 1) {
-						transition_in(if_block, 1);
-					}
-				} else {
-					if_block = create_if_block_1(ctx);
-					if_block.c();
-					transition_in(if_block, 1);
-					if_block.m(div1, null);
-				}
-			} else if (if_block) {
+			if (current_block_type_index === previous_block_index) {
+				if_blocks[current_block_type_index].p(ctx, dirty);
+			} else {
 				group_outros();
 
-				transition_out(if_block, 1, 1, () => {
-					if_block = null;
+				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+					if_blocks[previous_block_index] = null;
 				});
 
 				check_outros();
+				if_block = if_blocks[current_block_type_index];
+
+				if (!if_block) {
+					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+					if_block.c();
+				} else {
+					if_block.p(ctx, dirty);
+				}
+
+				transition_in(if_block, 1);
+				if_block.m(div1, null);
 			}
 		},
 		i(local) {
@@ -108,7 +122,7 @@ function create_else_block(ctx) {
 		d(detaching) {
 			if (detaching) detach(div2);
 			destroy_component(signaltracker);
-			if (if_block) if_block.d();
+			if_blocks[current_block_type_index].d();
 		}
 	};
 }
@@ -143,66 +157,37 @@ function create_if_block(ctx) {
 	};
 }
 
-// (41:8) {#if !beginTrading}
-function create_if_block_1(ctx) {
-	let intro;
-	let updating_beginTrading;
-	let t;
+// (43:8) {:else}
+function create_else_block_1(ctx) {
 	let div;
 	let current_block_type_index;
 	let if_block;
 	let div_transition;
 	let current;
-
-	function intro_beginTrading_binding(value) {
-		/*intro_beginTrading_binding*/ ctx[3](value);
-	}
-
-	let intro_props = {};
-
-	if (/*beginTrading*/ ctx[0] !== void 0) {
-		intro_props.beginTrading = /*beginTrading*/ ctx[0];
-	}
-
-	intro = new Intro({ props: intro_props });
-	binding_callbacks.push(() => bind(intro, 'beginTrading', intro_beginTrading_binding));
-	const if_block_creators = [create_if_block_2, create_else_block_1];
+	const if_block_creators = [create_if_block_2, create_else_block_2];
 	const if_blocks = [];
 
-	function select_block_type_1(ctx, dirty) {
+	function select_block_type_2(ctx, dirty) {
 		if (!/*$gameOver*/ ctx[2]) return 0;
 		return 1;
 	}
 
-	current_block_type_index = select_block_type_1(ctx, -1);
+	current_block_type_index = select_block_type_2(ctx, -1);
 	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
 	return {
 		c() {
-			create_component(intro.$$.fragment);
-			t = space();
 			div = element("div");
 			if_block.c();
 		},
 		m(target, anchor) {
-			mount_component(intro, target, anchor);
-			insert(target, t, anchor);
 			insert(target, div, anchor);
 			if_blocks[current_block_type_index].m(div, null);
 			current = true;
 		},
 		p(ctx, dirty) {
-			const intro_changes = {};
-
-			if (!updating_beginTrading && dirty & /*beginTrading*/ 1) {
-				updating_beginTrading = true;
-				intro_changes.beginTrading = /*beginTrading*/ ctx[0];
-				add_flush_callback(() => updating_beginTrading = false);
-			}
-
-			intro.$set(intro_changes);
 			let previous_block_index = current_block_type_index;
-			current_block_type_index = select_block_type_1(ctx, dirty);
+			current_block_type_index = select_block_type_2(ctx, dirty);
 
 			if (current_block_type_index !== previous_block_index) {
 				group_outros();
@@ -227,7 +212,6 @@ function create_if_block_1(ctx) {
 		},
 		i(local) {
 			if (current) return;
-			transition_in(intro.$$.fragment, local);
 			transition_in(if_block);
 
 			add_render_callback(() => {
@@ -238,15 +222,12 @@ function create_if_block_1(ctx) {
 			current = true;
 		},
 		o(local) {
-			transition_out(intro.$$.fragment, local);
 			transition_out(if_block);
 			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
 			div_transition.run(0);
 			current = false;
 		},
 		d(detaching) {
-			destroy_component(intro, detaching);
-			if (detaching) detach(t);
 			if (detaching) detach(div);
 			if_blocks[current_block_type_index].d();
 			if (detaching && div_transition) div_transition.end();
@@ -254,8 +235,61 @@ function create_if_block_1(ctx) {
 	};
 }
 
-// (48:12) {:else}
-function create_else_block_1(ctx) {
+// (41:8) {#if !beginTrading}
+function create_if_block_1(ctx) {
+	let intro;
+	let updating_beginTrading;
+	let current;
+
+	function intro_beginTrading_binding(value) {
+		/*intro_beginTrading_binding*/ ctx[3](value);
+	}
+
+	let intro_props = {};
+
+	if (/*beginTrading*/ ctx[0] !== void 0) {
+		intro_props.beginTrading = /*beginTrading*/ ctx[0];
+	}
+
+	intro = new Intro({ props: intro_props });
+	binding_callbacks.push(() => bind(intro, 'beginTrading', intro_beginTrading_binding));
+
+	return {
+		c() {
+			create_component(intro.$$.fragment);
+		},
+		m(target, anchor) {
+			mount_component(intro, target, anchor);
+			current = true;
+		},
+		p(ctx, dirty) {
+			const intro_changes = {};
+
+			if (!updating_beginTrading && dirty & /*beginTrading*/ 1) {
+				updating_beginTrading = true;
+				intro_changes.beginTrading = /*beginTrading*/ ctx[0];
+				add_flush_callback(() => updating_beginTrading = false);
+			}
+
+			intro.$set(intro_changes);
+		},
+		i(local) {
+			if (current) return;
+			transition_in(intro.$$.fragment, local);
+			current = true;
+		},
+		o(local) {
+			transition_out(intro.$$.fragment, local);
+			current = false;
+		},
+		d(detaching) {
+			destroy_component(intro, detaching);
+		}
+	};
+}
+
+// (49:12) {:else}
+function create_else_block_2(ctx) {
 	let gameover;
 	let current;
 	gameover = new GameOver({});
@@ -283,7 +317,7 @@ function create_else_block_1(ctx) {
 	};
 }
 
-// (44:12) {#if !$gameOver}
+// (45:12) {#if !$gameOver}
 function create_if_block_2(ctx) {
 	let timer;
 	let t0;
