@@ -74,7 +74,9 @@
   </div>
   <div class="text-xl tracking-tighter text-white intro-text">
     cv-ml-trader - short for 'computer vision-machine learning-trader' - is a a demo/experiment that runs gesture recognition from your webcam's video stream in order to determine whether to buy or
-    sell stocks while consuming a simulated market data feed over Solace PubSub+ and sending the end result back to Solace for processing on the server side.
+    sell stocks while consuming a simulated market data feed over <a href="https://solace.com/try-it-now/">Solace PubSub+</a> and sending the end result back to
+    <a href="https://www.solace.com">Solace</a>
+    for processing on the server side.
     <br />
     <br />
     There are three gestures that can be detected - try them now (use your right hand, against a clear background and away from your face as shown in the images below for best results):

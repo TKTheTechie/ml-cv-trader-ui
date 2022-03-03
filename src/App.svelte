@@ -11,8 +11,10 @@
   import { gameOver } from './lib/store/store';
   import GameOver from './lib/game-over/game-over.svelte';
   import './app.css';
+  import Leaderboard from './lib/leaderboard/leaderboard.svelte';
 
   let beginTrading = false;
+  let showLeaderboard = false;
 
   let solaceClient = new SolaceClient();
 
@@ -20,6 +22,8 @@
 
   onMount(async () => {
     solaceClient.connect().then(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      showLeaderboard = urlParams.has('showLeaderboard');
       console.log('Solace Connected!!!');
     });
   });
@@ -31,25 +35,27 @@
 
 <section class="text-gray-100 bg-black">
   <Header />
-  <div class="grid grid-cols-2 align-top">
-    <div class="flex justify-end w-full align-top text-center lg: -ml-10">
-      <SignalTracker />
+  {#if showLeaderboard}
+    <Leaderboard numberOfEntries={25} />
+  {:else}
+    <div class="grid grid-cols-2 align-top">
+      <div class="flex justify-end w-full align-top text-center lg: -ml-10">
+        <SignalTracker />
+      </div>
+      <div class="w-5/6 lg:max-w-lg ml-2 lg:w-full lg:h-full lg:max-h-lg  md:w-1/2 ">
+        {#if !beginTrading}
+          <Intro bind:beginTrading />
+          <div transition:fade>
+            {#if !$gameOver}
+              <Timer timerStart={'1:00'} />
+              <TradingEngine />
+              <Portfolio />
+            {:else}
+              <GameOver />
+            {/if}
+          </div>
+        {/if}
+      </div>
     </div>
-    <div class="w-5/6 lg:max-w-lg ml-2 lg:w-full lg:h-full lg:max-h-lg  md:w-1/2 ">
-      {#if !beginTrading}
-        <!-- <GameOver /> -->
-        <Intro bind:beginTrading />
-      {:else}
-        <div transition:fade>
-          {#if !$gameOver}
-            <Timer timerStart={'1:00'} />
-            <TradingEngine />
-            <Portfolio />
-          {:else}
-            <GameOver />
-          {/if}
-        </div>
-      {/if}
-    </div>
-  </div>
+  {/if}
 </section>
