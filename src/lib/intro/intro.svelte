@@ -73,7 +73,7 @@
     <h1 class="justify-center mb-1 text-xl font-bold tracking-tighter text-center text-white lg:text-center lg:text-xl title-font w-max">cv-ml-trader</h1>
   </div>
   <div class="text-xl tracking-tighter text-white intro-text">
-    cv-ml-trader - short for 'computer vision-machine learning-trader' - is a a demo/experiment that runs gesture recognition from your webcam's video stream in order to determine whether to buy or
+    ml-cv-trader - short for 'machine learning-computer vision-trader' - is a a demo/experiment that runs gesture recognition from your webcam's video stream in order to determine whether to buy or
     sell stocks while consuming a simulated market data feed over <a href="https://solace.com/try-it-now/" target="_blank">Solace PubSub+</a> and sending the end result back to
     <a href="https://www.solace.com" target="_blank">Solace</a>
     for processing on the server side.
