@@ -115,7 +115,7 @@ function create_fragment(ctx) {
 			div0.innerHTML = `<h1 class="justify-center mb-1 text-xl font-bold tracking-tighter text-center text-white lg:text-center lg:text-xl title-font w-max">cv-ml-trader</h1>`;
 			t1 = space();
 			div12 = element("div");
-			t2 = text("cv-ml-trader - short for 'computer vision-machine learning-trader' - is a a demo/experiment that runs gesture recognition from your webcam's video stream in order to determine whether to buy or\n    sell stocks while consuming a simulated market data feed over ");
+			t2 = text("ml-cv-trader - short for 'machine learning-computer vision-trader' - is a a demo/experiment that runs gesture recognition from your webcam's video stream in order to determine whether to buy or\n    sell stocks while consuming a simulated market data feed over ");
 			a0 = element("a");
 			a0.textContent = "Solace PubSub+";
 			t4 = text(" and sending the end result back to\n    ");
