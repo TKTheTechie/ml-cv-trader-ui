@@ -1,6 +1,6 @@
 # ml-cv-trader-ui
 
-ml-cv-trader - short for 'computer vision-machine learning-trader' - is a a demo/experiment that
+ml-cv-trader - short for 'machine learning-computer vision-trader' - is a a demo/experiment that
 runs gesture recognition from your webcam's video stream in order to determine whether to buy or
 sell stocks while consuming a simulated market data feed over Solace PubSub+ and sending the end
 result back to Solace for processing on the server side.
