@@ -99,9 +99,10 @@ export class SolaceClient {
               if (regexdSub.split("/").length != topicName.split("/").length)
                 return;
             }
-            if (this.topicSubscriptions.get(sub).isSubscribed && this.topicSubscriptions.get(sub).callback != null)
+            if (this.topicSubscriptions.get(sub).isSubscribed && this.topicSubscriptions.get(sub).callback != null) {
               log.debug(`Got callback for ${sub}`);
-            this.topicSubscriptions.get(sub).callback(message);
+              this.topicSubscriptions.get(sub).callback(message);
+            }
           }
         }
       });
